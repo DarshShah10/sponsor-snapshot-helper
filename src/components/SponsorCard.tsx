@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SponsorCardProps {
   imageUrl: string;
@@ -17,6 +18,7 @@ const SponsorCard: React.FC<SponsorCardProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -42,13 +44,13 @@ const SponsorCard: React.FC<SponsorCardProps> = ({
     };
   }, []);
 
-  const delay = 0.1 + (index * 0.1);
+  const delay = isMobile ? 0.05 + (index * 0.05) : 0.1 + (index * 0.1);
 
   return (
     <div className="flex flex-col items-center" ref={cardRef}>
       <div 
         className={cn(
-          "sponsor-card w-full aspect-[16/9] mb-3",
+          "sponsor-card w-full aspect-[16/9] mb-4 relative overflow-hidden rounded-xl border border-white/10",
           className
         )}
         style={{ 
@@ -57,10 +59,11 @@ const SponsorCard: React.FC<SponsorCardProps> = ({
           transition: `opacity 0.7s ease-out ${delay}s, transform 0.7s ease-out ${delay}s`
         }}
       >
+        <div className="absolute inset-0 bg-gradient-to-br from-sponsor-purple/5 to-transparent z-0"></div>
         <img 
           src={imageUrl} 
           alt={`${title} logo`} 
-          className="w-full h-full object-contain p-6"
+          className="w-full h-full object-contain p-6 relative z-10"
           loading="lazy"
         />
       </div>

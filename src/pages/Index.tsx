@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import SectionTitle from '@/components/SectionTitle';
 import SponsorCard from '@/components/SponsorCard';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SponsorData {
   imageUrl: string;
@@ -16,6 +17,7 @@ interface SponsorSection {
 
 const SponsorPage: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -127,42 +129,59 @@ const SponsorPage: React.FC = () => {
     <div className="relative min-h-screen overflow-hidden bg-sponsor-black bg-hero-pattern">
       {/* Background gradient effects */}
       <div 
-        className="fixed top-0 left-0 w-full h-full pointer-events-none"
+        className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
         style={{
-          background: `radial-gradient(circle at ${scrollY % 100}% ${scrollY % 100}%, rgba(138, 43, 226, 0.1) 0%, rgba(0, 0, 0, 0) 70%)`,
+          background: `radial-gradient(circle at ${scrollY % 100}% ${scrollY % 100}%, rgba(138, 43, 226, 0.15) 0%, rgba(0, 0, 0, 0) 70%)`,
           transition: 'background 0.3s ease-out'
         }}
       />
       
-      <div className="container mx-auto px-4 md:px-6 py-20 max-w-screen-xl">
+      <div className="container mx-auto px-4 md:px-6 py-16 md:py-20 max-w-screen-xl relative z-10">
+        {/* Main Title - Udbhav */}
+        <div className="mb-16 md:mb-24">
+          <SectionTitle 
+            title="UDBHAV" 
+            subtitle="Celebrating Innovation and Entrepreneurship"
+            variant="primary" 
+          />
+        </div>
+
+        {/* Sponsors Title */}
         <SectionTitle 
           title="SPONSORS" 
-          className="mb-24"
+          className="mb-16 md:mb-24"
+          variant="secondary"
+          delay={0.3}
         />
 
-        {sponsorSections.map((section, sectionIndex) => (
-          <div key={section.sectionTitle} className="mb-20">
-            {sectionIndex > 0 && (
-              <div className="section-divider" />
-            )}
-            
-            <SectionTitle 
-              title={section.sectionTitle} 
-              delay={0.2}
-            />
-            
-            <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${section.cols} gap-8 md:gap-10 lg:gap-12`}>
-              {section.sponsors.map((sponsor, index) => (
-                <SponsorCard
-                  key={`${section.sectionTitle}-${index}`}
-                  imageUrl={sponsor.imageUrl}
-                  title={sponsor.title}
-                  index={index}
-                />
-              ))}
+        {/* Sponsor Sections */}
+        <div className="space-y-20 md:space-y-28">
+          {sponsorSections.map((section, sectionIndex) => (
+            <div key={section.sectionTitle} className="relative">
+              {sectionIndex > 0 && (
+                <div className="section-divider mb-16" />
+              )}
+              
+              <SectionTitle 
+                title={section.sectionTitle} 
+                variant="secondary"
+                delay={0.2}
+                className="mb-8 md:mb-12"
+              />
+              
+              <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${section.cols} gap-6 sm:gap-8 lg:gap-10`}>
+                {section.sponsors.map((sponsor, index) => (
+                  <SponsorCard
+                    key={`${section.sectionTitle}-${index}`}
+                    imageUrl={sponsor.imageUrl}
+                    title={sponsor.title}
+                    index={index}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
