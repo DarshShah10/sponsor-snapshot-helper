@@ -169,7 +169,11 @@ const SponsorPage: React.FC = () => {
                 className="mb-8 md:mb-12"
               />
               
-              <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${section.cols} gap-6 sm:gap-8 lg:gap-10`}>
+              <div className={`grid grid-cols-1 ${
+                section.cols === 2 ? 
+                  'sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2' : 
+                  'sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4'
+              } gap-6 sm:gap-8 lg:gap-10`}>
                 {section.sponsors.map((sponsor, index) => (
                   <SponsorCard
                     key={`${section.sectionTitle}-${index}`}
